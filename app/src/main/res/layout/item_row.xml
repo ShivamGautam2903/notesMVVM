@@ -16,10 +16,4 @@
         android:textSize="24sp"
         android:layout_weight="1"/>
 
-    <ImageView
-        android:id="@+id/ivDelete"
-        android:padding="5dp"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/ic_delete"/>
 </LinearLayout>

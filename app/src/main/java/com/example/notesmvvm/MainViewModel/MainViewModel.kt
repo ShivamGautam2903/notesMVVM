@@ -18,4 +18,10 @@ class MainViewModel(private val noteRepository: NoteRepository) : ViewModel() {
             noteRepository.createNote(note)
         }
     }
+
+    fun deleteNote(note: Note){
+        viewModelScope.launch ( Dispatchers.IO){
+            noteRepository.deleteNote(note)
+        }
+    }
 }

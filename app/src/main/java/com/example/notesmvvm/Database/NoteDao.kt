@@ -6,7 +6,7 @@ import androidx.room.*
 @Dao
 interface NoteDao {
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun createNote(note: Note)
 
     @Query("SELECT * FROM note")

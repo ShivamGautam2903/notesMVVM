@@ -1,7 +1,6 @@
 package com.example.notesmvvm.Database
 
 import androidx.room.Entity
-import androidx.room.OnConflictStrategy
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "note")

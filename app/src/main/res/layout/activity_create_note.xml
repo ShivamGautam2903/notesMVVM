@@ -39,13 +39,4 @@
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="121dp" />
 
-    <Button
-        android:id="@+id/btnDelete"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Delete Note"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/btnAdd"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

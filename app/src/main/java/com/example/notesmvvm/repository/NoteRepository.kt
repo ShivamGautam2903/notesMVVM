@@ -1,4 +1,4 @@
-package com.example.notesmvvm.Repository
+package com.example.notesmvvm.repository
 
 import androidx.lifecycle.LiveData
 import com.example.notesmvvm.Database.Note

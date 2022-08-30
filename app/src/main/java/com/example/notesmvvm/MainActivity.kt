@@ -1,6 +1,4 @@
 package com.example.notesmvvm
-
-import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -11,33 +9,37 @@ import com.example.notesmvvm.Database.Note
 import com.example.notesmvvm.Database.NoteDatabase
 import com.example.notesmvvm.MainViewModel.MainViewModel
 import com.example.notesmvvm.MainViewModel.MainViewModelFactory
-import com.example.notesmvvm.RecyclerView.RecyclerViewAdapter
-import com.example.notesmvvm.Repository.NoteRepository
+import com.example.notesmvvm.RecyclerView.NoteClickInterface
+import com.example.notesmvvm.RecyclerView.NoteDeleteInterface
+import com.example.notesmvvm.RecyclerView.NoteRVAdapter
+import com.example.notesmvvm.repository.NoteRepository
 import com.example.notesmvvm.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), NoteClickInterface, NoteDeleteInterface{
 
     private lateinit var binding: ActivityMainBinding
-    lateinit var mainViewModel: MainViewModel
-    lateinit var noteList: List<Note>
+    private lateinit var mainViewModel: MainViewModel
+    private lateinit var noteList: List<Note>
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val recyclerView = binding.rvDisplay
-        val adapter = RecyclerViewAdapter()
+        val adapter = NoteRVAdapter(this, this)
 
         val dao = NoteDatabase.getDatabase(applicationContext).noteDao()
         val repository = NoteRepository(dao)
 
-        mainViewModel =
-            ViewModelProvider(this, MainViewModelFactory(repository)).get(MainViewModel::class.java)
 
+        mainViewModel =
+            ViewModelProvider(this, MainViewModelFactory(repository))[MainViewModel::class.java]
+
+        //observing the data and saving the value in a List
         mainViewModel.getNotes().observe(this) {
-            adapter.submitList(it)
+            adapter.updateList(it)
             noteList = it
         }
 
@@ -46,27 +48,29 @@ class MainActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
 
         binding.addNote.setOnClickListener {
-            val intent = Intent(this, CreateNoteActivity::class.java).also {
+            Intent(this, CreateNoteActivity::class.java).also {
                 startActivity(it)
             }
         }
+    }
 
-        /*
+    /*
         This function handles the onClickEvent for each item in recyclerview.
         We use the position we obtain from the adapter, and obtain it's ID using a previously created noteList variable.
         */
 
-        adapter.setOnItemClickListener(object : RecyclerViewAdapter.onItemClickListener {
-            override fun onItemClick(position: Int) {
-                val intent = Intent(this@MainActivity, CreateNoteActivity::class.java)
-                intent.putExtra("id",noteList[position].id)
-                intent.putExtra("title", noteList[position].title)
-                intent.putExtra("body", noteList[position].body)
-                intent.putExtra("action","Edit Note")
-                intent.putExtra("vis",true)
-                startActivity(intent)
-            }
-        })
+    override fun onNoteClick(note: Note) {
+        val intent = Intent(this@MainActivity, CreateNoteActivity::class.java)
+        intent.putExtra("id", note.id)
+        intent.putExtra("title", note.title)
+        intent.putExtra("body", note.body)
+        intent.putExtra("task", "Edit Note")
+        startActivity(intent)
+    }
+
+    override fun onNoteDelete(note: Note) {
+        mainViewModel.deleteNote(note)
+        Toast.makeText(this, "The note has been deleted", Toast.LENGTH_SHORT).show()
     }
 
 }

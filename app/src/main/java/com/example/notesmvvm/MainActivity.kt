@@ -12,13 +12,12 @@ import com.example.notesmvvm.Database.NoteDatabase
 import com.example.notesmvvm.MainViewModel.MainViewModel
 import com.example.notesmvvm.MainViewModel.MainViewModelFactory
 import com.example.notesmvvm.RecyclerView.NoteClickInterface
-import com.example.notesmvvm.RecyclerView.NoteDeleteInterface
 import com.example.notesmvvm.RecyclerView.NoteRVAdapter
 import com.example.notesmvvm.repository.NoteRepository
 import com.example.notesmvvm.databinding.ActivityMainBinding
 import java.util.*
 
-class MainActivity : AppCompatActivity(), NoteClickInterface, NoteDeleteInterface {
+class MainActivity : AppCompatActivity(), NoteClickInterface {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var mainViewModel: MainViewModel
@@ -31,7 +30,7 @@ class MainActivity : AppCompatActivity(), NoteClickInterface, NoteDeleteInterfac
         setContentView(binding.root)
 
         val recyclerView = binding.rvDisplay
-        val adapter = NoteRVAdapter(this, this)
+        val adapter = NoteRVAdapter(this)
 
         val dao = NoteDatabase.getDatabase(applicationContext).noteDao()
         val repository = NoteRepository(dao)

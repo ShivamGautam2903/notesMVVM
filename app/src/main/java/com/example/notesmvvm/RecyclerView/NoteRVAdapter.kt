@@ -10,9 +10,7 @@ import com.example.notesmvvm.Database.Note
 import com.example.notesmvvm.R
 
 class NoteRVAdapter(
-    private val noteClickInterface: NoteClickInterface,
-    private val noteDeleteInterface: NoteDeleteInterface
-) :
+    private val noteClickInterface: NoteClickInterface) :
     RecyclerView.Adapter<NoteRVAdapter.ViewHolder>() {
 
     private val allNotes = ArrayList<Note>()
@@ -33,7 +31,7 @@ class NoteRVAdapter(
             noteClickInterface.onNoteClick(allNotes[position])
         }
         holder.iconDelete.setOnClickListener {
-            noteDeleteInterface.onNoteDelete(allNotes[position])
+            noteClickInterface.onNoteDelete(allNotes[position])
         }
     }
 
@@ -48,10 +46,7 @@ class NoteRVAdapter(
     }
 }
 
-interface NoteDeleteInterface {
-    fun onNoteDelete(note: Note)
-}
-
 interface NoteClickInterface {
+    fun onNoteDelete(note: Note)
     fun onNoteClick(note: Note)
 }

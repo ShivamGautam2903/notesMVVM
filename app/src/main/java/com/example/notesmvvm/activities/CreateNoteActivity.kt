@@ -1,7 +1,8 @@
-package com.example.notesmvvm
+package com.example.notesmvvm.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.example.notesmvvm.Database.Note
 import com.example.notesmvvm.Database.NoteDatabase
@@ -9,11 +10,15 @@ import com.example.notesmvvm.MainViewModel.MainViewModel
 import com.example.notesmvvm.MainViewModel.MainViewModelFactory
 import com.example.notesmvvm.repository.NoteRepository
 import com.example.notesmvvm.databinding.ActivityCreateNoteBinding
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 class CreateNoteActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCreateNoteBinding
     private lateinit var mainViewModel: MainViewModel
+    private lateinit var db: FirebaseFirestore
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,8 +28,8 @@ class CreateNoteActivity : AppCompatActivity() {
         val bundle: Bundle? = intent.extras
         val title = bundle?.getString("title", "")
         val body = bundle?.getString("body", "")
-        val id = intent?.getIntExtra("id",0) ?: 0
-        val task = intent?.getStringExtra("task")  ?: "Add Note"
+        val id = intent?.getIntExtra("id", 0) ?: 0
+        val task = intent?.getStringExtra("task") ?: "Add Note"
 
         binding.apply {
             tvTitle.setText(title)
@@ -45,5 +50,7 @@ class CreateNoteActivity : AppCompatActivity() {
             finish()
         }
 
+        auth = FirebaseAuth.getInstance()
+        db = FirebaseFirestore.getInstance()
     }
 }

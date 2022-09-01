@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">NotesMVVM</string>
+    <string name="signed_in">Not signed in</string>
 </resources>
